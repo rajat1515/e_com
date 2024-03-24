@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./e_com_backend:/e_com_backend"
+    command: sh -c "sleep 15 && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - database
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: e_com
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: django
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data

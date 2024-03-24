@@ -1,0 +1,4 @@
+*.pyc
+venv
+/postgres_data/*
+__pycache__

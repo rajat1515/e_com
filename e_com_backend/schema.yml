@@ -1,0 +1,700 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/schema/:
+    get:
+      operationId: api_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/token/:
+    post:
+      operationId: api_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /vendor/:
+    post:
+      operationId: vendor_create
+      description: create a new VendorUser.(Admin access)
+      tags:
+      - vendor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vendor'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Vendor'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Vendor'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                description: domain name
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Bad request. Duplicate email or invid data
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                description: Internal server error. Something went wrong
+          description: ''
+  /vendor/customer/:
+    post:
+      operationId: vendor_customer_create
+      description: Register the customer
+      tags:
+      - vendor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRegistration'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomerRegistration'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomerRegistration'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                description: message
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Bad request.
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                description: Something went wrong
+          description: ''
+  /vendor/product_add/:
+    post:
+      operationId: vendor_product_add_create
+      description: create a new Product.(Supervisor access)
+      tags:
+      - vendor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Bad request.
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                description: Internal server error. Something went wrong
+          description: ''
+  /vendor/product_csv/:
+    post:
+      operationId: vendor_product_csv_create
+      description: |-
+        Uploads a CSV file containing product data and adds the products
+        to the store.(Supervisor access)
+
+        Parameters:
+            - file: File CSV format
+
+        Returns:
+            HTTP 201 Created if products are added successfully.
+            HTTP 400 Bad Request if there are validation errors in the CSV data.
+            HTTP 400 Bad Request if the request is not valid for public schema.
+            HTTP 500 Internal Server Error if something went wrong during processing.
+      tags:
+      - vendor
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /vendor/product_sold/:
+    post:
+      operationId: vendor_product_sold_create
+      description: Register the prduct sold.(Salesperson access)
+      tags:
+      - vendor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSold'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductSold'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductSold'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductSold'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Bad request.
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                description: Something went wrong
+          description: ''
+  /vendor/products/:
+    get:
+      operationId: vendor_products_retrieve
+      description: |-
+        Retrieve a list Product with store (Customer Access)
+
+        Parameters:
+            product_name: list search product in all stores (one product,  All Stores)
+            Store_name: list all product in store
+            (if both not present , will list All products, all stores)
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number for paginated results.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: Number of items per page for pagination.
+      - in: query
+        name: product_name
+        schema:
+          type: string
+        description: Search keyword for product_name.
+      - in: query
+        name: store_name
+        schema:
+          type: string
+        description: Search keyword for store name.
+      tags:
+      - vendor
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /vendor/stores/:
+    get:
+      operationId: vendor_stores_retrieve
+      description: Retrieve a list of stores (Admin Access)
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number for paginated results.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: Number of items per page for pagination.
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Search keyword for filtering by name or                     location
+          or contact details.
+      tags:
+      - vendor
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: vendor_stores_create
+      description: create a new VendorUser.(Admin access)
+      tags:
+      - vendor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Store'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Store'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Store'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: 'Bad request. '
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                description: Internal server error. Something went wrong
+          description: ''
+  /vendor/users/:
+    get:
+      operationId: vendor_users_retrieve
+      description: Retrieve a list of users filtered by email or role.            (Admin
+        Access)
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: Page number for paginated results.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: Number of items per page for pagination.
+      - in: query
+        name: q
+        schema:
+          type: string
+        description: Search keyword for filtering by email or role.
+      tags:
+      - vendor
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: vendor_users_create
+      description: create a new VendorUser.(Admin access)
+      tags:
+      - vendor
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VendorUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VendorUser'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VendorUser'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                description: Bad request. Duplicate email or invid data
+          description: ''
+        '500':
+          content:
+            application/json:
+              schema:
+                description: Internal server error. Something went wrong
+          description: ''
+components:
+  schemas:
+    CustomerRegistration:
+      type: object
+      properties:
+        first_name:
+          type: string
+          writeOnly: true
+        last_name:
+          type: string
+          writeOnly: true
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - first_name
+      - last_name
+      - password
+    Product:
+      type: object
+      properties:
+        store:
+          type: integer
+        name:
+          type: string
+          maxLength: 255
+        type:
+          type: string
+        manufacturer:
+          type: string
+          maxLength: 255
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        units:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - manufacturer
+      - name
+      - price
+      - store
+      - type
+    ProductSold:
+      type: object
+      properties:
+        product:
+          type: integer
+          nullable: true
+        unit_sold:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+    RoleEnum:
+      enum:
+      - admin
+      - supervisor
+      - salesperson
+      - customer
+      type: string
+      description: |-
+        * `admin` - Admin
+        * `supervisor` - Supervisor
+        * `salesperson` - Salesperson
+        * `customer` - Customer
+    Store:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        location:
+          type: string
+          maxLength: 255
+        contact_details:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - contact_details
+      - created_at
+      - id
+      - location
+      - name
+      - updated_at
+    TokenObtainPair:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - email
+      - password
+      - refresh
+    Vendor:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        schema_name:
+          type: string
+          maxLength: 63
+        address:
+          type: string
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        phone:
+          type: string
+          maxLength: 20
+        gst:
+          type: string
+          maxLength: 15
+        pan:
+          type: string
+          maxLength: 10
+      required:
+      - address
+      - email
+      - gst
+      - id
+      - pan
+      - phone
+      - schema_name
+    VendorUser:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+      - role
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
