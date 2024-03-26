@@ -29,7 +29,7 @@ Domian name: public (rest can be any values )
 
 The public vendor is only used to create tenants.
 
-### create super user
+### Create super user
     ```bash
     # Run the Django management command to create the public tenant
     docker-compose run -it e-commerce-backend python manage.py create_superuser
@@ -50,10 +50,12 @@ http://localhost:8000/api/schema/swagger-ui
 Endpoint for vendor creation:
 /vendor
 
-### Create Tenant-Specific Super User (for initial superuser only)
+### Create Tenant-Specific Admin User (for initial Admin only)
 
 ```
     http://(schema).localhost:8000/admin/store/vendoruser/add/
+
+    # Select user and the role 
 ```
 
 Now all the APIs can be tested on (schema_name).localhost:8000.
