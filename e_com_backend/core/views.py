@@ -12,7 +12,7 @@ class VendorCreation(APIView):
             400: {'description': 'Bad request. Duplicate email or invid data'},
             500: {'description': 'Internal server error. Something went wrong'}
         },
-        description="create a new VendorUser.(Admin access)")
+        description="create a new VendorUser")
     def post(self, request):
         try:
             serializer = VendorSerializer(data=request.data)

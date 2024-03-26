@@ -20,7 +20,7 @@ To get started, follow these steps:
 1. Create a public tenant/vendor:
     ```bash
     # Run the Django management command to create the public tenant
-    docker-compose run -it hr-automation-backend python manage.py create_tenant
+    docker-compose run -it e-commerce-backend python manage.py create_tenant
     ```
 
 Schema name: public 
@@ -29,13 +29,39 @@ Domian name: public (rest can be any values )
 
 The public vendor is only used to create tenants.
 
-Now, using Postman or Swagger UI, you can create a specific tenant
+### create super user
+    ```bash
+    # Run the Django management command to create the public tenant
+    docker-compose run -it e-commerce-backend python manage.py create_superuser
+    ```
 
+
+### Start django server
+    ```bash
+    # Run the Django management command to start server
+    docker-compose compose up 
+    ```
+
+Now, using tools like Postman or Swagger UI, you can create a specific tenant.
+
+Access Swagger UI via:
 http://localhost:8000/api/schema/swagger-ui
 
-Endpoint / vendor 
+Endpoint for vendor creation:
+/vendor
 
+### Create Tenant-Specific Super User (for initial superuser only)
 
-now all the apis can be tested on (schema_name).localhost:8000
+```
+    http://(schema).localhost:8000/admin/store/vendoruser/add/
+```
 
+Now all the APIs can be tested on (schema_name).localhost:8000.
+
+To access APIs:
+
+1) Obtain an access token from the /api/token/ endpoint for the user.
+2) Copy the access token into the Authorization input box.
+
+Note Admin user will be able to access only administrator APIs
 
